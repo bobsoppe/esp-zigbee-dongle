@@ -1,0 +1,33 @@
+repos:
+  - repo: local
+    hooks:
+      - id: tsci-build
+        name: tscircuit build
+        # The commit must fail on a circuit error, so gate on the command whose
+        # exit code reports one: `tsci build`, not `tsci check`.
+        files: ^(.*\.tsx?|package\.json|bun\.lock|tsconfig\.json|tscircuit\.config\.json)$
+        entry: bun run build
+        language: system
+        pass_filenames: false
+
+      - id: typecheck
+        name: typecheck
+        # Sources plus everything that changes how they are type-checked: the
+        # pinned tscircuit and typescript versions, and the compiler config.
+        files: ^(.*\.tsx?|package\.json|bun\.lock|tsconfig\.json)$
+        entry: bun run typecheck
+        language: system
+        pass_filenames: false
+
+  # Catches an unknown or invalid option in renovate.json here rather than
+  # leaving it to surface as a repository problem on Renovate's own dashboard.
+  # The validator treats a named file as global self-hosted config unless told
+  # otherwise, which would let repo-only mistakes through, so --no-global keeps
+  # it validating the file as the repository config it is. Not --strict: the
+  # validator already fails on warnings, and config migrations arrive as PRs
+  # from the :configMigration preset.
+  - repo: https://github.com/renovatebot/pre-commit-hooks
+    rev: 44.167.5
+    hooks:
+      - id: renovate-config-validator
+        args: ["--no-global"]

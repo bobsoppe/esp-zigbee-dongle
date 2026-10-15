@@ -1,0 +1,30 @@
+{
+  "name": "esp-zigbee-dongle",
+  "version": "0.0.0",
+  "private": true,
+  "packageManager": "bun@1.4.3",
+  "type": "module",
+  "description": "ESP32-H2 Zigbee/ESPHome stackable motherboard and daisy-chained daughterboards, designed as code with tscircuit.",
+  "license": "MIT",
+  "scripts": {
+    "prepare": "if command -v pre-commit >/dev/null 2>&1; then pre-commit install; fi",
+    "dev": "tsci dev",
+    "build": "tsci build",
+    "fabrication": "tsci build && bun scripts/fabrication.ts",
+    "check": "tsci check",
+    "typecheck": "tsc --noEmit",
+    "snapshot": "tsci snapshot"
+  },
+  "devDependencies": {
+    "@tscircuit/circuit-json-util": "0.0.122",
+    "@tscircuit/soup-util": "0.0.41",
+    "@types/node": "22.20.5",
+    "@types/react": "19.3.0",
+    "circuit-json": "0.0.528",
+    "circuit-json-to-bom-csv": "0.0.19",
+    "circuit-json-to-pnp-csv": "0.0.20",
+    "tscircuit": "0.0.2890",
+    "typescript": "5.9.3"
+  },
+  "trustedDependencies": []
+}

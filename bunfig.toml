@@ -1,0 +1,3 @@
+# Apply the npm release-age cooldown at install time as well as in Renovate (renovate.json).
+[install]
+minimumReleaseAge = 86400
