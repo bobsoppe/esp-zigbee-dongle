@@ -1,0 +1,55 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+# Two runs of one tag must not overlap: one could interleave its uploads and its asset pruning
+# with the other's, leaving the release holding files from two different builds. Runs of
+# different tags stay parallel because the tag is part of the group key.
+# Runs only ever wait, never cancel: the setting that would cancel them in progress is left
+# unset (default false); killing a publish mid-way would leave the release half-updated.
+concurrency:
+  group: release-${{ github.ref }}
+
+jobs:
+  release:
+    # Pinned so the OS cannot move under this job when ubuntu-latest migrates; Renovate maintains the bump.
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: "1.4.3"
+      - run: bun install --frozen-lockfile
+      # Builds every board and writes the JLCPCB set for each publishable board into release/;
+      # exits 1 without writing when no board is publishable (the smoke-test coupon is excluded
+      # in scripts/fabrication.ts).
+      - run: bun run fabrication
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            gh release upload "$GITHUB_REF_NAME" release/* --clobber
+            # Replace the asset set, not just the matching names: a renamed or removed board would
+            # otherwise linger as a stale artefact. The release is this workflow's output in full,
+            # hand-added files included; gh prints nothing for a deletion, so each removal is logged below.
+            expected=$(mktemp)
+            for file in release/*; do basename "$file"; done > "$expected"
+            # The asset list is read on its own so a failed gh call fails the step;
+            # only grep's "nothing selected" exit status is absorbed.
+            assets=$(gh release view "$GITHUB_REF_NAME" --json assets --jq '.assets[].name')
+            stale=$(printf '%s\n' "$assets" | grep -vxF -f "$expected" || true)
+            for asset in $stale; do
+              echo "Removing stale release asset: $asset"
+              gh release delete-asset "$GITHUB_REF_NAME" "$asset" --yes
+            done
+          else
+            gh release create "$GITHUB_REF_NAME" --generate-notes --verify-tag release/*
+          fi

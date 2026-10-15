@@ -1,0 +1,24 @@
+node_modules/
+
+# tsci's parts-engine cache
+.tscircuit/
+
+# See README.md "Generated and ignored". Kept on the workspace volume, deliberately not in
+# git history: the published repo is the minimal scaffold only.
+.openchamber/
+
+# Local agent/tool configuration. Local-only, same as .openchamber/.
+.opencode/
+
+# Build output: circuit.json, gerbers, BOM/CPL, kicad exports, preview images
+dist/
+
+# JLCPCB upload set. Attached to releases, not committed.
+release/
+
+*.log
+*.tgz
+.DS_Store
+
+# The tscircuit CLI writes a registry config and reads a token here; never commit it.
+.npmrc

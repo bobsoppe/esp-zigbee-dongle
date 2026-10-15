@@ -1,0 +1,20 @@
+repos:
+  - repo: local
+    hooks:
+      - id: tsci-build
+        name: tscircuit build
+        # The commit must fail on a circuit error, so gate on the command whose
+        # exit code reports one: `tsci build`, not `tsci check`.
+        files: ^(.*\.tsx?|package\.json|bun\.lock|tsconfig\.json|tscircuit\.config\.json)$
+        entry: bun run build
+        language: system
+        pass_filenames: false
+
+      - id: typecheck
+        name: typecheck
+        # Sources plus everything that changes how they are type-checked: the
+        # pinned tscircuit and typescript versions, and the compiler config.
+        files: ^(.*\.tsx?|package\.json|bun\.lock|tsconfig\.json)$
+        entry: bun run typecheck
+        language: system
+        pass_filenames: false

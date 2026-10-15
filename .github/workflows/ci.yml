@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    # Pinned so the OS cannot move under CI when ubuntu-latest migrates; Renovate maintains the bump.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: "1.4.3"
+      - run: bun install --frozen-lockfile
+      # The release job's build and JLCPCB packaging command, run here too so a
+      # break fails this push or pull request instead of a tag whose release then
+      # never appears. Fetches parts/CDN data, as the release job does.
+      #
+      # The smoke-test coupon (index.circuit.tsx) is this repository's only board,
+      # so there is nothing to package on this tree and that is not a packaging
+      # break. FABRICATION_ALLOW_EMPTY lets this step pass in that state; the
+      # release job deliberately does not set it, so a tag on a coupon-only tree
+      # still refuses there. Any other non-zero exit still fails this step.
+      - run: bun run fabrication
+        env:
+          FABRICATION_ALLOW_EMPTY: "1"
+      # The same hooks a local commit runs, so the hook list has one home.
+      - run: python3 -m venv /tmp/pre-commit-venv && /tmp/pre-commit-venv/bin/pip install --requirement requirements-ci.txt
+      - run: /tmp/pre-commit-venv/bin/pre-commit run --all-files --show-diff-on-failure

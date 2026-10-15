@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "jsx": "react-jsx",
+    "strict": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "noEmit": true,
+    "experimentalDecorators": true,
+    // "tscircuit" is upstream's value and is what defines the JSX intrinsics
+    // (<board />, <resistor />). "node" is ours: scripts/ is a Node script.
+    "types": ["tscircuit", "node"]
+  },
+  "include": ["**/*.ts", "**/*.tsx"],
+  // Upstream excludes node_modules/dist/.claude. release/ is our build output and
+  // .openchamber/ is local-only but contains a .tsx, so tsc would otherwise read it.
+  "exclude": ["node_modules", "dist", "release", ".openchamber", ".claude"]
+}

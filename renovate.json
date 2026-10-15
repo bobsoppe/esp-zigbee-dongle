@@ -1,0 +1,37 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    "helpers:pinGitHubActionDigests",
+    "security:minimumReleaseAgeNpm",
+    "security:minimumReleaseAgePypi"
+  ],
+  "rangeStrategy": "pin",
+  "osvVulnerabilityAlerts": true,
+  "packageRules": [
+    {
+      "description": "The tscircuit toolchain ships several pre-1.0 releases a week; routine patch/minor updates are grouped into one PR, while majors stay separate so a breaking release is reviewed on its own.",
+      "matchPackageNames": [
+        "tscircuit",
+        "@tscircuit/*",
+        "circuit-json",
+        "circuit-json-to-bom-csv",
+        "circuit-json-to-pnp-csv"
+      ],
+      "matchUpdateTypes": ["patch", "minor"],
+      "groupName": "tscircuit"
+    },
+    {
+      "description": "tscircuit and circuit-json-to-bom-csv both declare a typescript peer of ^5.0.0, so a major upgrade is unsupported until those peers widen. Deferred for dashboard approval rather than disabled, so the pending major stays visible and this rule can be retired as soon as the constraint moves.",
+      "matchPackageNames": ["typescript"],
+      "matchUpdateTypes": ["major"],
+      "dependencyDashboardApproval": true
+    },
+    {
+      "description": "Keep Renovate's release-age window in step with bunfig.toml's install-time cooldown. Scoped to the update types that support a release-age check so the security:minimumReleaseAgeNpm and security:minimumReleaseAgePypi presets keep their internal-checks filter and update-type exemptions.",
+      "matchDatasources": ["npm", "pypi"],
+      "matchUpdateTypes": ["major", "minor", "patch", "digest", "pinDigest"],
+      "minimumReleaseAge": "1 day"
+    }
+  ]
+}
