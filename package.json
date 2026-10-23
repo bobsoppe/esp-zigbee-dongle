@@ -2,7 +2,7 @@
   "name": "esp-zigbee-dongle",
   "version": "0.0.0",
   "private": true,
-  "packageManager": "bun@1.4.3",
+  "packageManager": "bun@1.4.4",
   "type": "module",
   "description": "ESP32-H2 Zigbee/ESPHome stackable motherboard and daisy-chained daughterboards, designed as code with tscircuit.",
   "license": "MIT",
