@@ -16,14 +16,14 @@
     "snapshot": "tsci snapshot"
   },
   "devDependencies": {
-    "@tscircuit/circuit-json-util": "0.0.124",
+    "@tscircuit/circuit-json-util": "0.0.128",
     "@tscircuit/soup-util": "0.0.41",
     "@types/node": "22.20.5",
     "@types/react": "19.3.0",
-    "circuit-json": "0.0.529",
+    "circuit-json": "0.0.534",
     "circuit-json-to-bom-csv": "0.0.21",
     "circuit-json-to-pnp-csv": "0.0.20",
-    "tscircuit": "0.0.2979",
+    "tscircuit": "0.0.3008",
     "typescript": "5.9.3"
   },
   "trustedDependencies": []
