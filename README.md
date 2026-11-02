@@ -87,7 +87,7 @@ fails the push or pull request instead of a tag whose release then never appears
   `command -v pre-commit` so a machine without pre-commit is unaffected.
 - **The versioning policy lives in `renovate.json`.** Every rule there carries a human-readable
   `description` explaining why it exists; the rule that matters here is that dependency versions are
-  pinned exactly and move only through a reviewed update.
+  pinned exactly and `renovate.json` records which updates merge unattended.
 - **Renovate's rate limits are off** (`:disableRateLimiting`, `renovate.json`). This overrides
   `prHourlyLimit: 2` and `prConcurrentLimit: 10`, so every eligible update opens in the run that finds it
   rather than waiting for the next hourly budget. A burst of PRs therefore lands at once, and each one
