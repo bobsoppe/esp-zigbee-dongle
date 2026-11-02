@@ -11,6 +11,13 @@
     ":disableRateLimiting"
   ],
   "rangeStrategy": "pin",
+  "automerge": true,
+  "lockFileMaintenance": {
+    "automerge": true
+  },
+  "vulnerabilityAlerts": {
+    "automerge": true
+  },
   "osvVulnerabilityAlerts": true,
   "packageRules": [
     {
@@ -41,6 +48,11 @@
       "description": "The bun toolchain is pinned in package.json's packageManager field and in both workflows' setup-bun bun-version input, which Renovate maps to npm's bun package. Group them so one bump lands as one PR, instead of CI installing a bun other than the one that wrote bun.lock.",
       "matchPackageNames": ["bun"],
       "groupName": "bun"
+    },
+    {
+      "description": "Major updates stay manual by policy.",
+      "matchUpdateTypes": ["major"],
+      "automerge": false
     }
   ]
 }
