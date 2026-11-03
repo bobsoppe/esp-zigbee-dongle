@@ -11,7 +11,7 @@
     "dev": "tsci dev",
     "build": "tsci build",
     "fabrication": "tsci build && bun scripts/fabrication.ts",
-    "check": "tsci check",
+    "check": "tsci check boards/motherboard.circuit.tsx && tsci check index.circuit.tsx",
     "typecheck": "tsc --noEmit",
     "snapshot": "tsci snapshot"
   },
@@ -26,5 +26,8 @@
     "tscircuit": "0.0.3075",
     "typescript": "5.9.3"
   },
-  "trustedDependencies": []
+  "trustedDependencies": [],
+  "dependencies": {
+    "kicad-libraries": "https://github.com/espressif/kicad-libraries#dd76561"
+  }
 }

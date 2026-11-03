@@ -23,7 +23,8 @@ export const STACK_PIN_COUNT = STACK_PIN_NAMES.length
 export const STACK_HEADER_PITCH = 2.54
 export const STACK_HEADER_ROWS = 2
 
-export const STACK_HEADER_XY = { x: 0, y: -14 } as const
+export const STACK_HEADER_XY = { x: 22.5, y: 0 } as const
+export const STACK_HEADER_ROTATION = 90
 
 export type StackHolePosition = {
   x: number
