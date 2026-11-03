@@ -9,7 +9,8 @@ import {
   writeFile,
 } from "node:fs/promises"
 import { dirname, join, relative, resolve, sep } from "node:path"
-import type { AnyCircuitElement } from "circuit-json"
+import type { AnyCircuitElement, PcbPin1Location } from "circuit-json"
+import { VERIFIED_PARTS_BY_SUPPLIER_PART } from "../lib/parts"
 import {
   convertBomRowsToCsv,
   convertCircuitJsonToBomRows,
@@ -21,6 +22,75 @@ import {
 
 type CircuitJson = AnyCircuitElement[]
 type BomRows = Awaited<ReturnType<typeof convertCircuitJsonToBomRows>>
+
+// Verified part orientations live in lib/parts. The fabrication step looks a
+// part up by its supplier part number and supplies only that part's verified
+// supplier pin-1 frame; any part without a record still fails closed.
+type VerifiedSupplierPin1 = {
+  supplier: "jlcpcb"
+  pin1: PcbPin1Location
+}
+
+function readVerifiedPartPins(
+  circuitJson: CircuitJson,
+): Map<string, VerifiedSupplierPin1> {
+  const pins = new Map<string, VerifiedSupplierPin1>()
+  for (const element of circuitJson) {
+    if (element.type !== "source_component" || !element.name) continue
+    const partNumber = element.supplier_part_numbers?.jlcpcb?.[0]
+    if (!partNumber) continue
+    const part = VERIFIED_PARTS_BY_SUPPLIER_PART.get(`jlcpcb:${partNumber}`)
+    if (!part) continue
+    pins.set(element.name, {
+      supplier: "jlcpcb",
+      pin1: part.supplierPin1.jlcpcb,
+    })
+  }
+  return pins
+}
+
+function applyVerifiedSupplierPin1(
+  circuitJson: CircuitJson,
+  pins: Map<string, VerifiedSupplierPin1>,
+): CircuitJson {
+  if (pins.size === 0) return circuitJson
+
+  return circuitJson.map((element) => {
+    if (element.type !== "pcb_component") return element
+    const sourceComponent = circuitJson.find(
+      (
+        candidate,
+      ): candidate is Extract<
+        AnyCircuitElement,
+        { type: "source_component" }
+      > =>
+        candidate.type === "source_component" &&
+        candidate.source_component_id === element.source_component_id,
+    )
+    const designator = sourceComponent?.name
+    const pin = designator ? pins.get(designator) : undefined
+    if (!pin) return element
+
+    return {
+      ...element,
+      supplier_pin1_location_map: {
+        ...element.supplier_pin1_location_map,
+        [pin.supplier]:
+          element.supplier_pin1_location_map?.[pin.supplier] ?? pin.pin1,
+      },
+    }
+  })
+}
+
+function getVerifiedPickAndPlace(circuitJson: CircuitJson): CircuitJson {
+  const pins = readVerifiedPartPins(circuitJson)
+  const verifiedCircuitJson = applyVerifiedSupplierPin1(circuitJson, pins)
+  convertCircuitJsonToPickAndPlaceRows(verifiedCircuitJson, {
+    supplier: "jlcpcb",
+    requireSupplierRotation: true,
+  })
+  return verifiedCircuitJson
+}
 
 const DIST_DIR = "dist"
 const RELEASE_DIR = "release"
@@ -208,10 +278,7 @@ if (hashes.size > 1 || hashes.has(undefined)) {
 // unverified rotation cannot reach a published row.
 for (const { boardFile } of releases) {
   try {
-    convertCircuitJsonToPickAndPlaceRows(
-      await readCircuitJson(boardFile),
-      { supplier: "jlcpcb", requireSupplierRotation: true },
-    )
+    getVerifiedPickAndPlace(await readCircuitJson(boardFile))
   } catch (error) {
     throw new Error(
       `${boardFile}: ${error instanceof Error ? error.message : String(error)}`,
@@ -256,9 +323,10 @@ try {
       convertBomRowsToCsv(bomRows),
     )
 
+    const verifiedCircuitJson = getVerifiedPickAndPlace(circuitJson)
     await writeFile(
       join(STAGING_DIR, `${slug}-cpl.csv`),
-      convertCircuitJsonToPickAndPlaceCsv(circuitJson, {
+      convertCircuitJsonToPickAndPlaceCsv(verifiedCircuitJson, {
         supplier: "jlcpcb",
         requireSupplierRotation: true,
       }),
