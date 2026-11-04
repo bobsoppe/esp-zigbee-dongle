@@ -13,6 +13,9 @@ node_modules/
 # Build output: circuit.json, gerbers, BOM/CPL, kicad exports, preview images
 dist/
 
+# tscircuit snapshot previews (regenerate with `bunx tsci snapshot`), not source
+boards/__snapshots__/
+
 # JLCPCB upload set. Attached to releases, not committed.
 release/
 
