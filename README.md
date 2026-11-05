@@ -3,9 +3,7 @@
 PCBs designed as code with [tscircuit](https://tscircuit.com): boards are TypeScript/TSX, and the
 toolchain turns them into Circuit JSON and then into the files a fabricator needs.
 
-The intended product is the ESP32-H2 Zigbee/ESPHome node described in `package.json`'s `description` — a
-stackable motherboard plus daisy-chained daughterboards. **The board in the repository today is a small
-sample coupon, not that design.**
+The product board is [`boards/motherboard.circuit.tsx`](boards/motherboard.circuit.tsx); `index.circuit.tsx` remains the toolchain smoke-test coupon.
 
 ## Prerequisites
 
@@ -29,7 +27,7 @@ sample coupon, not that design.**
 
 ## From source to a release
 
-1. A board is a `.circuit.tsx` or `.board.tsx` file — `index.circuit.tsx` today.
+1. A board is a `.circuit.tsx` or `.board.tsx` file — `boards/motherboard.circuit.tsx` today; `index.circuit.tsx` remains the coupon.
 2. `tsci build` writes `dist/<board>/circuit.json`.
 3. `scripts/fabrication.ts` walks `dist/` and, per board, writes three files into `release/`:
    `<slug>-gerbers.zip`, `<slug>-bom.csv` and `<slug>-cpl.csv`. The slug is the board's directory path
@@ -53,6 +51,11 @@ default is to publish every board unless it is named as a smoke test.
 - **Placement metadata.** Every component that will appear in the CPL must carry a `pin1_location` and a
   JLCPCB entry in `supplier_pin1_location_map`; otherwise the converter would silently substitute an
   unverified rotation.
+- **Verified part orientations live in `lib/parts/`.** A part record carries its JLCPCB
+  part number, supplier pin-1 frame, and verification note. The fabrication step looks
+  the part up by supplier number and supplies only that part's frame; a part without a
+  verified record still fails closed. This is a hardware-review record, not a per-board
+  bypass.
 - **No flagged part numbers.** If the build recorded a `supplier_footprint_mismatch_warning` for a part
   the BOM asserts, the run stops rather than shipping an unverified match.
 - **All or nothing.** The set is assembled in a staging directory and verified before it replaces
@@ -83,6 +86,9 @@ fails the push or pull request instead of a tag whose release then never appears
 - **`@types/node` is a declared devDependency.** `tsconfig.json` asks for the `node` types because
   `scripts/fabrication.ts` imports `node:` builtins. Without the declaration it resolves only through a
   hoisted transitive, so a dependency change could remove it with no signal.
+- **The Espressif KiCad library is a pinned dependency even though the board imports a committed
+  footprint copy.** The copy pins the courtyard encoding and the `pin1location` hint; the dependency is
+  the provenance and refresh source, pinned by `bun.lock`.
 - **`prepare` installs the pre-commit git hooks** when `bun install` runs, guarded by
   `command -v pre-commit` so a machine without pre-commit is unaffected.
 - **The versioning policy lives in `renovate.json`.** Every rule there carries a human-readable
