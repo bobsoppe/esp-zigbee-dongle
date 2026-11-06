@@ -20,10 +20,10 @@
     "@tscircuit/soup-util": "0.0.41",
     "@types/node": "22.20.5",
     "@types/react": "19.3.0",
-    "circuit-json": "0.0.543",
+    "circuit-json": "0.0.544",
     "circuit-json-to-bom-csv": "0.0.28",
     "circuit-json-to-pnp-csv": "0.0.21",
-    "tscircuit": "0.0.3075",
+    "tscircuit": "0.0.3093",
     "typescript": "5.9.3"
   },
   "trustedDependencies": [],
