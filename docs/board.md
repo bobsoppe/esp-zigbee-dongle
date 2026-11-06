@@ -21,6 +21,10 @@ The stack is carried by four standoffs, not by the header. Each hole is unplated
 | H3 | -26.0 | -16.0 | 2.7 |
 | H4 | 26.0 | -16.0 | 2.7 |
 
+### Stack hardware
+
+Four M2.5 hex standoffs per board gap carry the stack; the header is not load-bearing. Use 15.4 mm minimum length to match the SSQ/J2 seated height. A standard 16 mm M2.5 standoff also fits: the SSQ-108-24-G-D's 14.83 mm tails then engage the socket by about 5.7 mm, inside the socket's 3.68–6.35 mm insertion range. Do not use 15 mm: it over-inserts the SSQ tails by about 0.4 mm. M2.5 pan-head screws pass through the 2.7 mm unplated holes. Nylon or brass is acceptable; if brass, the standoff must seat on solder mask and must not bridge exposed copper.
+
 ## Stack header
 
 The 2×8, 2.54 mm receptacle centre is exported as `STACK_HEADER_XY` and its orientation as `STACK_HEADER_ROTATION`; it sits at (22.5, 0.0) mm, rotated 90°, on the +X short edge, with 3.0 mm between its courtyard and the outline. Keeping the stack connector on an edge leaves the board centre free for the module's support parts; the four standoffs, not the header, carry the stack.
