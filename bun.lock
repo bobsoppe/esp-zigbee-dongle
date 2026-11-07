@@ -12,7 +12,7 @@
         "@tscircuit/soup-util": "0.0.41",
         "@types/node": "22.20.5",
         "@types/react": "19.3.0",
-        "circuit-json": "0.0.545",
+        "circuit-json": "0.0.546",
         "circuit-json-to-bom-csv": "0.0.28",
         "circuit-json-to-pnp-csv": "0.0.23",
         "tscircuit": "0.0.3105",
@@ -270,7 +270,7 @@
 
     "chownr": ["chownr@1.1.4", "", {}, "sha512-jJ0bqzaylmJtVnNgzTeSOs8DPavpbYgEr/b0YL8/2GO3xJEhInFmhKMUnEJQjZumK7KXGFhUy89PrsJWlakBVg=="],
 
-    "circuit-json": ["circuit-json@0.0.545", "", { "dependencies": { "zod": "3" }, "peerDependencies": { "format-si-unit": "*" } }, "sha512-3sT+QbNJvipse8EktsLbYCjQIRME53LU+hk7aZXJvuvEKcOGGSr4foodFlm3I+JmSD76MLf5k2OljQdd2nZzbQ=="],
+    "circuit-json": ["circuit-json@0.0.546", "", { "dependencies": { "zod": "3" }, "peerDependencies": { "format-si-unit": "*" } }, "sha512-2c07EvZ8I/DS9xZRearTUFvXACvm/PKsjG3s87e5cHmZWc0g5KZIf72zKBTjtYX2Q6eV9gB7YLPjYGEWz+Zr1w=="],
 
     "circuit-json-to-bom-csv": ["circuit-json-to-bom-csv@0.0.28", "", { "dependencies": { "format-si-prefix": "^0.3.2", "lucide-react": "^1.23.0", "papaparse": "^5.4.1", "react": "^19.2.7", "react-dom": "^19.2.7" }, "peerDependencies": { "typescript": "^5.0.0" } }, "sha512-sjqzRRi1+4n/UgFyekq5nKkhXk3gwVpCXkqqvdIwRtMLezR3VRJ9xZ+P0IiV6JrQmuVEHBOsm7rFEXDj9pOaVA=="],
 
