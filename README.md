@@ -3,7 +3,7 @@
 PCBs designed as code with [tscircuit](https://tscircuit.com): boards are TypeScript/TSX, and the
 toolchain turns them into Circuit JSON and then into the files a fabricator needs.
 
-The product board is [`boards/motherboard.circuit.tsx`](boards/motherboard.circuit.tsx); `index.circuit.tsx` remains the toolchain smoke-test coupon.
+The product board is [`boards/motherboard.circuit.tsx`](boards/motherboard.circuit.tsx).
 
 ## Prerequisites
 
@@ -27,7 +27,7 @@ The product board is [`boards/motherboard.circuit.tsx`](boards/motherboard.circu
 
 ## From source to a release
 
-1. A board is a `.circuit.tsx` or `.board.tsx` file — `boards/motherboard.circuit.tsx` today; `index.circuit.tsx` remains the coupon.
+1. A board is a `.circuit.tsx` or `.board.tsx` file — such as `boards/motherboard.circuit.tsx`.
 2. `tsci build` writes `dist/<board>/circuit.json`.
 3. `scripts/fabrication.ts` walks `dist/` and, per board, writes three files into `release/`:
    `<slug>-gerbers.zip`, `<slug>-bom.csv` and `<slug>-cpl.csv`. The slug is the board's directory path
@@ -38,10 +38,9 @@ The product board is [`boards/motherboard.circuit.tsx`](boards/motherboard.circu
    exists, any asset attached to it that is not part of the current `release/*` set — including a file
    added by hand — is deleted. Each deletion is logged in the run.**
 
-**The packaging step refuses to run while the only board is the sample coupon.** The coupon is excluded
-from packaging by name in `scripts/fabrication.ts`, so a release publishes no manufacturing package for
-it; the run stops with `No publishable boards`. Adding a real board makes it package automatically — the
-default is to publish every board unless it is named as a smoke test.
+**The packaging step refuses to run on a tree with nothing to package.** `scripts/fabrication.ts` exits
+non-zero before writing anything when `dist/` holds no `circuit.json`. Every board the build produces is
+packaged automatically; none is excluded by name.
 
 ### What the packaging step enforces
 
@@ -109,24 +108,6 @@ fails the push or pull request instead of a tag whose release then never appears
   in both workflows' `setup-bun` input, which Renovate sees as three dependencies; a `packageRules` entry
   groups them so a bump lands as one PR and CI cannot install a bun other than the one that wrote
   `bun.lock`.
-
-## Known build warnings
-
-`bun run build` prints warnings for the sample board. The structural ones follow from the coupon
-being deliberately minimal, are expected, and need no action. The advisory availability warning
-appears when the parts lookup does not answer:
-
-```
-source_component_availability_warning: R1 may not have availability from jlcpcb (C11702).
-```
-
-This is not a stock problem. `C11702` is a JLCPCB **Basic** part, and
-[LCSC lists it in stock](https://www.lcsc.com/product-detail/C11702.html). The check reads tscircuit's
-own `jlcsearch` dataset, which can report *unknown* stock for parts that are in stock, and
-tscircuit's documentation states the warning *"can mean zero stock, unknown stock, or a failed or
-timed-out lookup; it does not prove the part is unavailable."*
-
-The check is deliberately left enabled, because it is useful for parts whose data is current.
 
 ## Licence
 
