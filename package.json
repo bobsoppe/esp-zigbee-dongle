@@ -20,7 +20,7 @@
     "@tscircuit/soup-util": "0.0.41",
     "@types/node": "22.20.5",
     "@types/react": "19.3.0",
-    "circuit-json": "0.0.545",
+    "circuit-json": "0.0.546",
     "circuit-json-to-bom-csv": "0.0.28",
     "circuit-json-to-pnp-csv": "0.0.23",
     "tscircuit": "0.0.3105",
