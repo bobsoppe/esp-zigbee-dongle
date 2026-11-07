@@ -22,8 +22,8 @@
     "@types/react": "19.3.0",
     "circuit-json": "0.0.545",
     "circuit-json-to-bom-csv": "0.0.28",
-    "circuit-json-to-pnp-csv": "0.0.22",
-    "tscircuit": "0.0.3104",
+    "circuit-json-to-pnp-csv": "0.0.23",
+    "tscircuit": "0.0.3105",
     "typescript": "5.9.3"
   },
   "trustedDependencies": [],
