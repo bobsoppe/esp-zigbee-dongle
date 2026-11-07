@@ -27,9 +27,7 @@ jobs:
         with:
           bun-version: "1.4.4"
       - run: bun install --frozen-lockfile
-      # Builds every board and writes the JLCPCB set for each publishable board into release/;
-      # exits 1 without writing when no board is publishable (the smoke-test coupon is excluded
-      # in scripts/fabrication.ts).
+      # Builds every board and writes the JLCPCB set for each into release/; the packaging script exits 1 without writing when dist/ holds no circuit.json
       - run: bun run fabrication
       - name: Publish release
         env:

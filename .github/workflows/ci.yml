@@ -25,14 +25,7 @@ jobs:
       # break fails this push or pull request instead of a tag whose release then
       # never appears. Fetches parts/CDN data, as the release job does.
       #
-      # The smoke-test coupon (index.circuit.tsx) is this repository's only board,
-      # so there is nothing to package on this tree and that is not a packaging
-      # break. FABRICATION_ALLOW_EMPTY lets this step pass in that state; the
-      # release job deliberately does not set it, so a tag on a coupon-only tree
-      # still refuses there. Any other non-zero exit still fails this step.
       - run: bun run fabrication
-        env:
-          FABRICATION_ALLOW_EMPTY: "1"
       # The same hooks a local commit runs, so the hook list has one home.
       - run: python3 -m venv /tmp/pre-commit-venv && /tmp/pre-commit-venv/bin/pip install --requirement requirements-ci.txt
       - run: /tmp/pre-commit-venv/bin/pre-commit run --all-files --show-diff-on-failure
