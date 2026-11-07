@@ -193,37 +193,14 @@ if (boardFiles.length === 0) {
 // GitHub release assets share one flat namespace and the host renames files
 // containing anything outside A-Za-z0-9._-, so derive one sanitised slug per
 // board and reject empty or colliding slugs before the first export.
-// index.circuit.tsx is the project's toolchain smoke test, not a product board: it is
-// still built and checked, but packaging it would publish an orderable JLCPCB set for
-// a coupon. Excluding it by name keeps the default "publish every board", so a new
-// product board is packaged automatically and none can be dropped by a pattern.
-// The release job relies on the refusal below: it must never set
-// FABRICATION_ALLOW_EMPTY. CI on this coupon-only tree sets it so its later
-// hook steps run; nothing is packaged and no release set is left behind.
-const SMOKE_TEST_SLUGS = new Set(["index"])
-
-const releases = boardFiles
-  .map((boardFile) => ({
-    boardFile,
-    // dist/boards/motherboard/circuit.json -> boards-motherboard
-    slug: relative(DIST_DIR, dirname(boardFile))
-      .split(sep)
-      .join("-")
-      .replace(/[^A-Za-z0-9._-]/g, "-"),
-  }))
-  .filter(({ slug }) => !SMOKE_TEST_SLUGS.has(slug))
-
-if (releases.length === 0) {
-  if (process.env.FABRICATION_ALLOW_EMPTY) {
-    console.log(
-      `Nothing publishable: every board under ${DIST_DIR}/ is a smoke test. Not packaging.`,
-    )
-    process.exit(0)
-  }
-  throw new Error(
-    `No publishable boards: every board under ${DIST_DIR}/ is a smoke test.`,
-  )
-}
+const releases = boardFiles.map((boardFile) => ({
+  boardFile,
+  // dist/boards/motherboard/circuit.json -> boards-motherboard
+  slug: relative(DIST_DIR, dirname(boardFile))
+    .split(sep)
+    .join("-")
+    .replace(/[^A-Za-z0-9._-]/g, "-"),
+}))
 
 const emptySlugs = releases.filter(({ slug }) => slug === "")
 if (emptySlugs.length > 0) {
