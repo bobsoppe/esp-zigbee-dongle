@@ -5,7 +5,7 @@
     "": {
       "name": "esp-zigbee-dongle",
       "dependencies": {
-        "kicad-libraries": "https://github.com/espressif/kicad-libraries#dd76561",
+        "kicad-libraries": "https://github.com/espressif/kicad-libraries#2e57022",
       },
       "devDependencies": {
         "@tscircuit/circuit-json-util": "0.0.131",
@@ -382,7 +382,7 @@
 
     "kicad-component-converter": ["kicad-component-converter@0.1.41", "", { "bin": { "kicad-mod-converter": "dist/cli.js", "kicad-component-converter": "dist/cli.js" } }, "sha512-nIvXOYbjW2qzBqy7n+4zL8pfHABFH721U8zWCoTmKNQYuFzSO2ZvKPfiEHH+PSUB3b6Iu8hTg7fCrXft0rHNxw=="],
 
-    "kicad-libraries": ["kicad-libraries@github:espressif/kicad-libraries#dd76561", {}, "espressif-kicad-libraries-dd76561", "sha512-3WWZTRKdqWlA0pghj8TkvgLVuHj+oGhNVo1URZgiLAJyebBMV6cHGfRFhJ5Ff0wRBSoOnQ0uYSDH33IjTzRh1Q=="],
+    "kicad-libraries": ["kicad-libraries@github:espressif/kicad-libraries#2e57022", {}, "espressif-kicad-libraries-2e57022", "sha512-7w5f/x4mpwXx5WyUNWi9LdOzix6c1hLwr7vt2f4B0PM6bqE2nI4/xeQCPILChJeBvdkRz599IMX0SwaGDh9j+Q=="],
 
     "kicad-to-circuit-json": ["kicad-to-circuit-json@0.0.149", "", { "peerDependencies": { "typescript": "^5" } }, "sha512-41OBkXiz9bCNIFmrFGmmeBnrZNUvMZO+hnhHBLHIIlgJerR04zsyyWfIe2UGTgDjI7SZKwjtVmA8ikhI98vGew=="],
 
