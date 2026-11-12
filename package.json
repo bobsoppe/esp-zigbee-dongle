@@ -23,7 +23,7 @@
     "circuit-json": "0.0.548",
     "circuit-json-to-bom-csv": "0.0.28",
     "circuit-json-to-pnp-csv": "0.0.23",
-    "tscircuit": "0.0.3149",
+    "tscircuit": "0.0.3151",
     "typescript": "5.9.3"
   },
   "trustedDependencies": [],
