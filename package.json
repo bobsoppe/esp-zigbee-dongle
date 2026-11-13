@@ -28,6 +28,6 @@
   },
   "trustedDependencies": [],
   "dependencies": {
-    "kicad-libraries": "https://github.com/espressif/kicad-libraries#bcfaab0"
+    "kicad-libraries": "https://github.com/espressif/kicad-libraries#21b5927"
   }
 }
