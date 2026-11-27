@@ -11,7 +11,7 @@
         "@tscircuit/circuit-json-util": "0.0.135",
         "@tscircuit/soup-util": "0.0.41",
         "@types/node": "22.20.7",
-        "@types/react": "19.3.1",
+        "@types/react": "19.3.3",
         "circuit-json": "0.0.563",
         "circuit-json-to-bom-csv": "0.0.28",
         "circuit-json-to-pnp-csv": "0.0.23",
@@ -220,7 +220,7 @@
 
     "@types/node": ["@types/node@22.20.7", "", { "dependencies": { "undici-types": "~6.21.0" } }, "sha512-F/Mcc4pD3YwXQCG50hb8BjB5RmrOere6hge7n2XHf0V8tpkZOVEjwYv9Ql7n0MpMn8Bv7+q12P9w6UHsBm0Sfw=="],
 
-    "@types/react": ["@types/react@19.3.1", "", { "dependencies": { "csstype": "^3.2.2" } }, "sha512-HNTkBIm8zmHX8LUXX2vtZ/ONzehrV1J3abl2fUIiZ5qxTYRCj/z+rDeFwOltqCLl9lRdUTKWT41OLtYuFV/Arg=="],
+    "@types/react": ["@types/react@19.3.3", "", { "dependencies": { "csstype": "^3.2.2" } }, "sha512-K8uWpJc4teiuOPdiP1umjeA9rGMgVPiXuoL66fcS1QlwBT1WMqY8PORmub9FadopIs+RCW6siYEs7Lpq+vDlog=="],
 
     "@types/react-router": ["@types/react-router@5.1.20", "", { "dependencies": { "@types/history": "^4.7.11", "@types/react": "*" } }, "sha512-jGjmu/ZqS7FjSH6owMcD5qpq19+1RS9DeVRqfl1FeBMxTDQAGwlMWOcs52NDoXaNKyG3d1cYQFMs9rCrb88o9Q=="],
 
